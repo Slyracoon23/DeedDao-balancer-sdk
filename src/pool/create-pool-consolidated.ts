@@ -2,22 +2,18 @@ import { Contract } from '@ethersproject/contracts';
 import BigNumber from 'bignumber.js';
 import { BigNumber as EPBigNumber } from '@ethersproject/bignumber';
 import { toNormalizedWeights } from '@balancer-labs/balancer-js';
-import { sendTransaction }  from './transactions/send-transaction';
+import { sendTransaction }  from '../transactions/send-transaction';
 
 import { ethers } from "ethers";
 
 
 import {
-    JsonRpcProvider,
     TransactionResponse,
-    Web3Provider
 } from '@ethersproject/providers';
 
 
 import {
-    Vault__factory,
     WeightedPoolFactory__factory,
-    WeightedPool__factory
   } from '@balancer-labs/typechain';
 
 

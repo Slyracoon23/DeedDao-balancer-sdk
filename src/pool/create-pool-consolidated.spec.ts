@@ -6,8 +6,6 @@ import { ethers } from "ethers";
 
 import { createWeightedPool, PoolSeedToken, calculateTokenWeights} from './create-pool-consolidated';
 
-const functions = require('./create-pool-consolidated');
-
 
 const tokens: Record<string, PoolSeedToken> = {};
 
@@ -15,7 +13,7 @@ const mockPoolId =
     'EEE8292CB20A443BA1CAAA59C985CE14CA2BDEE5000100000000000000000263';
 
 
-jest.mock('./transactions/send-transaction');
+jest.mock('../transactions/send-transaction');
 
 jest.mock('@ethersproject/contracts', () => {
     const Contract = jest.fn().mockImplementation(() => {
@@ -67,7 +65,7 @@ describe('PoolCreator', () => {
 
         describe('happy case', () => {
             beforeEach(async () => {
-            // require('./transactions/__mock__/send-transaction').__setMockPoolAddress(
+            // require('../transactions/__mock__/send-transaction').__setMockPoolAddress(
             //     mockPoolAddress
             // );
             
@@ -86,7 +84,7 @@ describe('PoolCreator', () => {
             });
 
             it('Should call sendTransaction with the correct information', () => {
-                const sendTransactionArgs = require('./transactions/send-transaction')
+                const sendTransactionArgs = require('../transactions/send-transaction')
                 .sendTransaction.mock.calls[0];
               
                 expect(sendTransactionArgs[3]).toEqual('create');

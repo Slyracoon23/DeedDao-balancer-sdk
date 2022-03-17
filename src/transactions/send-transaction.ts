@@ -2,17 +2,11 @@
 
 
 import { Contract } from '@ethersproject/contracts';
-import BigNumber from 'bignumber.js';
-import { BigNumber as EPBigNumber } from '@ethersproject/bignumber';
-import { toNormalizedWeights } from '@balancer-labs/balancer-js';
-
 import { ethers } from "ethers";
 
 
 import {
-    JsonRpcProvider,
     TransactionResponse,
-    Web3Provider
 } from '@ethersproject/providers';
 
 
