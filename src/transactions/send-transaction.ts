@@ -17,14 +17,12 @@ import {
 
 
 
-
-
 export interface WalletError extends Error {
     code: number | string;
   }
   
 
-export  async function sendTransaction(
+  export async function sendTransaction(
     web3: ethers.providers.JsonRpcProvider,
     contractAddress: string,
     abi: any[],
