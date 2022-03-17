@@ -1,8 +1,9 @@
-import { Web3Provider } from '@ethersproject/providers';
+import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 import { AddressZero } from '@ethersproject/constants';
 import BigNumber from 'bignumber.js';
 
 import { createWeightedPool, PoolSeedToken, calculateTokenWeights } from './create-pool-consolidated';
+
 
 
 const tokens: Record<string, PoolSeedToken> = {};
@@ -74,7 +75,7 @@ describe('PoolCreator', () => {
             it('Should call sendTransaction with the correct information', () => {
 
                 const sendTransaction = jest.fn().mockImplementation(() => {  // TODO Don't know why mock my function is this?
-                    (() => {
+                    () => {
                         wait: jest.fn().mockImplementation(() => {
                             const mockReceipt = {
                                 events: [
@@ -86,7 +87,7 @@ describe('PoolCreator', () => {
                             };
                             return mockReceipt;
                         });
-                    });
+                    };
                 });
 
                 const sendTransactionArgs = sendTransaction.mock.calls[0];
