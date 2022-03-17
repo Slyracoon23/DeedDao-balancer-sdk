@@ -3,6 +3,8 @@ import BigNumber from 'bignumber.js';
 import { BigNumber as EPBigNumber } from '@ethersproject/bignumber';
 import { toNormalizedWeights } from '@balancer-labs/balancer-js';
 
+import { ethers } from "ethers";
+
 
 import {
     JsonRpcProvider,
@@ -145,7 +147,7 @@ export async function createWeightedPool(
 // WEB3 Send Transaction
 
 async function sendTransaction(
-    web3: Web3Provider | JsonRpcProvider,
+    web3: ethers.providers.JsonRpcProvider,
     contractAddress: string,
     abi: any[],
     action: string,
