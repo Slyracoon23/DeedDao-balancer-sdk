@@ -2,14 +2,20 @@ import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 import { AddressZero } from '@ethersproject/constants';
 import BigNumber from 'bignumber.js';
 
-import { createWeightedPool, PoolSeedToken, calculateTokenWeights } from './create-pool-consolidated';
+import { ethers } from "ethers";
 
+import { createWeightedPool, PoolSeedToken, calculateTokenWeights} from './create-pool-consolidated';
+
+import * as sendTransactionExport from './send-transaction';
 
 
 const tokens: Record<string, PoolSeedToken> = {};
 
 const mockPoolId =
     'EEE8292CB20A443BA1CAAA59C985CE14CA2BDEE5000100000000000000000263';
+
+const mockSendTransaction = jest.spyOn(sendTransactionExport, 'sendTransaction')
+
 
 jest.mock('@ethersproject/contracts', () => {
     const Contract = jest.fn().mockImplementation(() => {
@@ -58,8 +64,8 @@ describe('PoolCreator', () => {
 
         describe('happy case', () => {
             beforeEach(async () => {
-
-                const mockProvider = {} as Web3Provider;
+               
+                const mockProvider = {} as ethers.providers.JsonRpcProvider;
                 tokens.WETH.weight = 50;
                 tokens.USDT.weight = 50;
                 await createWeightedPool(
@@ -74,23 +80,8 @@ describe('PoolCreator', () => {
 
             it('Should call sendTransaction with the correct information', () => {
 
-                const sendTransaction = jest.fn().mockImplementation(() => {  // TODO Don't know why mock my function is this?
-                    () => {
-                        wait: jest.fn().mockImplementation(() => {
-                            const mockReceipt = {
-                                events: [
-                                    {
-                                        event: 'PoolCreated',
-                                        args: [mockPoolAddress]
-                                    }
-                                ]
-                            };
-                            return mockReceipt;
-                        });
-                    };
-                });
-
-                const sendTransactionArgs = sendTransaction.mock.calls[0];
+              
+                const sendTransactionArgs = mockSendTransaction.mock.calls[0];
                 expect(sendTransactionArgs[3]).toEqual('create');
                 const sendTransactionParams = sendTransactionArgs[4];
                 expect(sendTransactionParams[0]).toEqual(mockPoolName);
@@ -112,7 +103,7 @@ describe('PoolCreator', () => {
 
         describe('error handling', () => {
             it('should error if a zero length string is passed in for the pool owner', () => {
-                const mockProvider = {} as Web3Provider;
+                const mockProvider = {} as ethers.providers.JsonRpcProvider;
                 tokens.WETH.weight = 50;
                 tokens.USDT.weight = 50;
                 expect(

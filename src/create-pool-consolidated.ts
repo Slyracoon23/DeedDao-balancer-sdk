@@ -2,6 +2,7 @@ import { Contract } from '@ethersproject/contracts';
 import BigNumber from 'bignumber.js';
 import { BigNumber as EPBigNumber } from '@ethersproject/bignumber';
 import { toNormalizedWeights } from '@balancer-labs/balancer-js';
+import { sendTransaction }  from './send-transaction';
 
 import { ethers } from "ethers";
 
@@ -76,7 +77,7 @@ export function calculateTokenWeights(tokens: PoolSeedToken[]): string[] {
 
 
 export async function createWeightedPool(
-    provider: Web3Provider,
+    provider: ethers.providers.JsonRpcProvider,
     name: string,
     symbol: string,
     swapFee: string,
@@ -114,65 +115,3 @@ export async function createWeightedPool(
 }
 
 
-
-// NOT NEEDED
-/////////////////////////////////////
-// async function createPool(): Promise<TransactionResponse> {
-//     const provider = getProvider(); //  const { account, getProvider } = useWeb3();
-//     try {
-
-//         const tx = await createWeightedPoolHelper( // Create Weighted pool Helper
-//             provider,
-//             poolCreationState.name,
-//             poolCreationState.symbol,
-//             poolCreationState.initialFee,
-//             poolCreationState.seedTokens,
-//             poolOwner.value
-//         );
-    
-//         // [REMOVED] Original held transaction state data
-
-//         return tx;
-//     } catch (e) {
-//         console.log(e);
-//         return Promise.reject('Create failed');
-//     }
-// }
-
-
-/////////////////////////////////////
-
-
-
-// WEB3 Send Transaction
-
-async function sendTransaction(
-    web3: ethers.providers.JsonRpcProvider,
-    contractAddress: string,
-    abi: any[],
-    action: string,
-    params: any[]
-  ): Promise<TransactionResponse> {
-    console.log('Sending transaction');
-    console.log('Contract', contractAddress);
-    console.log('Action', `"${action}"`);
-    console.log('Params', params);
-    
-    const signer = web3.getSigner();
-    const contract = new Contract(contractAddress, abi, web3);
-    const contractWithSigner = contract.connect(signer);
-  
-    try {
-
-     // [REMOVED] Gas fee estimation
-     
-      // CHECK Send transaction here
-      return await contractWithSigner[action](...params);
-    } catch (e) {
-      const error = e as WalletError;
-
-      // [REMOVED] Error handeling 
-
-      return Promise.reject(error);
-    }
-  }
